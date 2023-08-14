@@ -1,6 +1,6 @@
 const app = require("./app");
-var http = require("http").Server(app);
-const PORT = process.env.PORT || 3000;
+const http = require("http").Server(app);
+const PORT = process.env.PORT || 3003;
 
 http.listen(PORT, (error) =>
   error
