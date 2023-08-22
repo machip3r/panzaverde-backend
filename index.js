@@ -5,5 +5,5 @@ const PORT = process.env.PORT || 3003;
 http.listen(PORT, (error) =>
   error
     ? console.log("Error Running Server")
-    : console.log(`The API is on: http://localhost:${PORT}/`)
+    : /* console.log(`The API is on: http://localhost:${PORT}/`) */ console.log(`The API is on`)
 );
