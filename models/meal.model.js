@@ -1,4 +1,4 @@
-const mealModel = () => {};
+const mealModel = () => { };
 const connection = require("../config/connection");
 
 mealModel.allSocialNetworks = (data, callback) =>
@@ -45,9 +45,16 @@ mealModel.allPlansBySubscription = (data, callback) =>
     callback
   );
 
-mealModel.allMeals = (data, callback) =>
+/* mealModel.allMeals = (data, callback) =>
   connection.query(
     "SELECT c.c_name, c.c_address, c.c_phone, sn.sn_name, s.s_specification, s.s_status, DATE_FORMAT(s.s_start_date,'%d/%m/%Y') AS s_start_date, DATE_FORMAT(s.s_final_date,'%d/%m/%Y') AS s_final_date, DATE_FORMAT(s.s_payment_date, '%d/%m/%Y') AS s_payment_date, s.s_payment_type, s.s_total, d.d_name, mt.mt_name, t.t_name, p.p_quantity, p.p_price FROM pvPlan p INNER JOIN pvSubscription s ON p.id_subscription = s.id_subscription INNER JOIN pvClient c ON s.id_client = c.id_client INNER JOIN pvSocialNetwork sn ON c.id_social_network = sn.id_social_network INNER JOIN pvDay d ON p.id_day = d.id_day INNER JOIN pvMealType mt ON p.id_meal_type = mt.id_meal_type INNER JOIN pvTime t ON p.id_time = t.id_time",
+    data,
+    callback
+  ); */
+
+mealModel.allMeals = (data, callback) =>
+  connection.query(
+    "SELECT s.id_subscription, c.c_name, c.c_address, c.c_phone, sn.sn_name, s.s_specification, s.s_status, DATE_FORMAT(s.s_start_date,'%d/%m/%Y') AS s_start_date, DATE_FORMAT(s.s_final_date,'%d/%m/%Y') AS s_final_date, DATE_FORMAT(s.s_payment_date, '%d/%m/%Y') AS s_payment_date, s.s_payment_type, s.s_total FROM pvSubscription s INNER JOIN pvClient c ON s.id_client = c.id_client INNER JOIN pvSocialNetwork sn ON c.id_social_network = sn.id_social_network",
     data,
     callback
   );
@@ -104,5 +111,74 @@ mealModel.removePlan = (data, callback) =>
     data,
     callback
   );
+
+mealModel.addPlanLDN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 1, 1, ?, 100.00)", data, callback);
+mealModel.addPlanLDK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 2, 1, ?, 100.00)", data, callback);
+mealModel.addPlanLDE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 3, 1, ?, 100.00)", data, callback);
+mealModel.addPlanLDV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 4, 1, ?, 100.00)", data, callback);
+mealModel.addPlanLCN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 1, 2, ?, 100.00)", data, callback);
+mealModel.addPlanLCK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 2, 2, ?, 100.00)", data, callback);
+mealModel.addPlanLCE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 3, 2, ?, 100.00)", data, callback);
+mealModel.addPlanLCV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 4, 2, ?, 100.00)", data, callback);
+mealModel.addPlanLCNN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 1, 3, ?, 100.00)", data, callback);
+mealModel.addPlanLCNK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 2, 3, ?, 100.00)", data, callback);
+mealModel.addPlanLCNE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 3, 3, ?, 100.00)", data, callback);
+mealModel.addPlanLCNV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 1, 4, 3, ?, 100.00)", data, callback);
+
+
+mealModel.addPlanMDN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 1, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMDK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 2, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMDE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 3, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMDV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 4, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMCN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 1, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMCK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 2, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMCE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 3, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMCV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 4, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMCNN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 1, 3, ?, 100.00)", data, callback);
+mealModel.addPlanMCNK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 2, 3, ?, 100.00)", data, callback);
+mealModel.addPlanMCNE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 3, 3, ?, 100.00)", data, callback);
+mealModel.addPlanMCNV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 2, 4, 3, ?, 100.00)", data, callback);
+
+
+mealModel.addPlanMiDN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 1, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMiDK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 2, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMiDE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 3, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMiDV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 4, 1, ?, 100.00)", data, callback);
+mealModel.addPlanMiCN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 1, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMiCK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 2, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMiCE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 3, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMiCV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 4, 2, ?, 100.00)", data, callback);
+mealModel.addPlanMiCNN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 1, 3, ?, 100.00)", data, callback);
+mealModel.addPlanMiCNK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 2, 3, ?, 100.00)", data, callback);
+mealModel.addPlanMiCNE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 3, 3, ?, 100.00)", data, callback);
+mealModel.addPlanMiCNV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 3, 4, 3, ?, 100.00)", data, callback);
+
+
+mealModel.addPlanJDN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 1, 1, ?, 100.00)", data, callback);
+mealModel.addPlanJDK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 2, 1, ?, 100.00)", data, callback);
+mealModel.addPlanJDE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 3, 1, ?, 100.00)", data, callback);
+mealModel.addPlanJDV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 4, 1, ?, 100.00)", data, callback);
+mealModel.addPlanJCN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 1, 2, ?, 100.00)", data, callback);
+mealModel.addPlanJCK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 2, 2, ?, 100.00)", data, callback);
+mealModel.addPlanJCE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 3, 2, ?, 100.00)", data, callback);
+mealModel.addPlanJCV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 4, 2, ?, 100.00)", data, callback);
+mealModel.addPlanJCNN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 1, 3, ?, 100.00)", data, callback);
+mealModel.addPlanJCNK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 2, 3, ?, 100.00)", data, callback);
+mealModel.addPlanJCNE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 3, 3, ?, 100.00)", data, callback);
+mealModel.addPlanJCNV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 4, 4, 3, ?, 100.00)", data, callback);
+
+
+mealModel.addPlanVDN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 1, 1, ?, 100.00)", data, callback);
+mealModel.addPlanVDK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 2, 1, ?, 100.00)", data, callback);
+mealModel.addPlanVDE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 3, 1, ?, 100.00)", data, callback);
+mealModel.addPlanVDV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 4, 1, ?, 100.00)", data, callback);
+mealModel.addPlanVCN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 1, 2, ?, 100.00)", data, callback);
+mealModel.addPlanVCK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 2, 2, ?, 100.00)", data, callback);
+mealModel.addPlanVCE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 3, 2, ?, 100.00)", data, callback);
+mealModel.addPlanVCV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 4, 2, ?, 100.00)", data, callback);
+mealModel.addPlanVCNN = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 1, 3, ?, 100.00)", data, callback);
+mealModel.addPlanVCNK = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 2, 3, ?, 100.00)", data, callback);
+mealModel.addPlanVCNE = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 3, 3, ?, 100.00)", data, callback);
+mealModel.addPlanVCNV = (data, callback) => connection.query("INSERT INTO pvPlan (id_subscription, id_day, id_meal_type, id_time, p_quantity, p_price) VALUES (?, 5, 4, 3, ?, 100.00)", data, callback);
 
 module.exports = mealModel;

@@ -1,9 +1,9 @@
 {
-  "mysql": {
-    "host": "localhost",
-    "port": "3306",
-    "user": "root",
-    "password": "machip3r",
-    "database": "panzaverde"
-  }
+    "mysql": {
+        "host": "sql9.freemysqlhosting.net",
+        "port": "3306",
+        "user": "sql9641491",
+        "password": "Ddmpnq3raY",
+        "database": "sql9641491"
+    }
 }
