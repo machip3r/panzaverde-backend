@@ -1,4 +1,5 @@
-/* CREATE DATABASE IF NOT EXISTS panzaverde; */
+CREATE DATABASE IF NOT EXISTS panzaverde;
+
 
 USE panzaverde;
 
