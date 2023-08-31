@@ -8,7 +8,6 @@ const mealControl = require("../controllers/meal.controller");
     - Update and Delete on Subscription
     - Create, Update and Delete on Plan
 
-    - Create, Read, Update and Delete on Driver
     - Create, Read, Update and Delete on Route
 */
 

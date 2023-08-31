@@ -1,9 +1,9 @@
 {
     "mysql": {
-        "host": "sql9.freemysqlhosting.net",
+        "host": "sql.freedb.tech",
         "port": "3306",
-        "user": "sql9641491",
-        "password": "Ddmpnq3raY",
-        "database": "sql9641491"
+        "user": "freedb_panzaverde",
+        "password": "FN%6@mAtXF@tanA",
+        "database": "freedb_panzaverde"
     }
 }
