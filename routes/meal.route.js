@@ -22,8 +22,8 @@ router.get("/plan/:id_subscription", mealControl.allPlansBySubscription);
 router.get("/", mealControl.allMeals);
 
 router.post("/client/addClient", mealControl.addClient);
+router.post("/client/addRoute", mealControl.addRoute);
 router.post("/subscription/addSubscription", mealControl.addSubscription);
-
 router.post("/plan/addPlan", mealControl.addPlan);
 
 router.post("/plan/addPlanLDN", mealControl.addPlanLDN);

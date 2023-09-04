@@ -100,6 +100,22 @@ mealControl.addClient = (request, result) => {
   else result.status(401).send({ message: "Empty Values" });
 };
 
+mealControl.addRoute = (request, result) => {
+  const body = request.body;
+
+  if (body.r_name && body.r_color)
+    mealModel.addRoute(
+      [ body.r_name, body.r_color ],
+      (error, rows) =>
+        error
+          ? result.status(500).send({ message: error })
+          : rows.affectedRows > 0
+            ? result.status(202).send({ message: "New Route" })
+            : result.status(500).send({ message: "Error on AddRoute()" })
+    );
+  else result.status(401).send({ message: "Empty Values" });
+};
+
 mealControl.addSubscription = (request, result) => {
   const body = request.body;
 
