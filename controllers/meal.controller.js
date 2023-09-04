@@ -31,6 +31,13 @@ mealControl.allClients = (request, result) =>
       : result.status(200).send(rows)
   );
 
+mealControl.allSubscriptions = (request, result) =>
+  mealModel.allSubscriptions([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
 mealControl.allSubscriptionsByClient = (request, result) =>
   mealModel.allSubscriptionsByClient(
     [ request.params.id_client ],

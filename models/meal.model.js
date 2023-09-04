@@ -9,11 +9,18 @@ mealModel.allSocialNetworks = (data, callback) =>
   );
 
 mealModel.allRoutes = (data, callback) =>
-  connection.query("SELECT id_route, r_name FROM pvRoute", data, callback);
+  connection.query("SELECT id_route, r_name, r_color FROM pvRoute", data, callback);
 
 mealModel.allClients = (data, callback) =>
   connection.query(
     "SELECT c.id_client, c.c_name, c.c_address, c.c_phone, sn.sn_name, c.c_status FROM pvClient c INNER JOIN pvSocialNetwork sn ON c.id_social_network = sn.id_social_network",
+    data,
+    callback
+  );
+
+mealModel.allSubscriptions = (data, callback) =>
+  connection.query(
+    "SELECT s.id_subscription, c.c_name, DATE_FORMAT(s.s_start_date,'%d/%m/%Y') AS s_start_date, DATE_FORMAT(s.s_final_date,'%d/%m/%Y') AS s_final_date, s.s_status FROM pvSubscription s INNER JOIN pvClient c ON s.id_client = c.id_client",
     data,
     callback
   );

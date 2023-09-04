@@ -14,6 +14,7 @@ const mealControl = require("../controllers/meal.controller");
 router.get("/socialNetwork", mealControl.allSocialNetworks);
 router.get("/route", mealControl.allRoutes);
 router.get("/client", mealControl.allClients);
+router.get("/subscription", mealControl.allSubscriptions);
 router.get("/subscription/:id_client", mealControl.allSubscriptionsByClient);
 router.get("/day", mealControl.allDays);
 router.get("/time", mealControl.allTimes);
