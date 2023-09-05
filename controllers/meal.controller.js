@@ -131,10 +131,7 @@ mealControl.addSubscription = (request, result) => {
     body.id_route &&
     body.s_specification &&
     body.s_start_date &&
-    body.s_final_date &&
-    body.s_payment_date &&
-    body.s_payment_type &&
-    body.s_total
+    body.s_final_date
   )
     mealModel.addSubscription(
       [
@@ -165,8 +162,7 @@ mealControl.addPlan = (request, result) => {
     body.id_day &&
     body.id_meal_type &&
     body.id_time &&
-    body.p_quantity &&
-    body.p_price
+    body.p_quantity
   )
     mealModel.addPlan(
       [
@@ -199,18 +195,42 @@ mealControl.editClient = (request, result) => {
   )
     mealModel.editClient(
       [
-        body.id_client,
         body.id_social_network,
         body.c_name,
         body.c_address,
         body.c_phone,
+        body.id_client,
       ],
       (error, rows) =>
         error
           ? result.status(500).send({ message: error })
           : rows.affectedRows > 0
-            ? result.status(202).send({ message: "New Client" })
-            : result.status(500).send({ message: "Error on AddClient()" })
+            ? result.status(202).send({ message: "Updated Client" })
+            : result.status(500).send({ message: "Error on EditClient()" })
+    );
+  else result.status(401).send({ message: "Empty Values" });
+};
+
+mealControl.editRoute = (request, result) => {
+  const body = request.body;
+
+  if (
+    body.id_route &&
+    body.r_name &&
+    body.r_color
+  )
+    mealModel.editRoute(
+      [
+        body.r_name,
+        body.r_color,
+        body.id_route,
+      ],
+      (error, rows) =>
+        error
+          ? result.status(500).send({ message: error })
+          : rows.affectedRows > 0
+            ? result.status(202).send({ message: "Updated Client" })
+            : result.status(500).send({ message: "Error on EditClient()" })
     );
   else result.status(401).send({ message: "Empty Values" });
 };
@@ -224,14 +244,10 @@ mealControl.editSubscription = (request, result) => {
     body.id_route &&
     body.s_specification &&
     body.s_start_date &&
-    body.s_final_date &&
-    s_payment_date &&
-    s_payment_type &&
-    s_total
+    body.s_final_date
   )
     mealModel.editSubscription(
       [
-        body.id_subscription,
         body.id_client,
         body.id_route,
         body.s_specification,
@@ -240,13 +256,14 @@ mealControl.editSubscription = (request, result) => {
         s_payment_date,
         s_payment_type,
         s_total,
+        body.id_subscription,
       ],
       (error, rows) =>
         error
           ? result.status(500).send({ message: error })
           : rows.affectedRows > 0
-            ? result.status(202).send({ message: "New Subscription" })
-            : result.status(500).send({ message: "Error on AddSubscription()" })
+            ? result.status(202).send({ message: "Updated Subscription" })
+            : result.status(500).send({ message: "Error on EditSubscription()" })
     );
   else result.status(401).send({ message: "Empty Values" });
 };
@@ -259,30 +276,36 @@ mealControl.editPlan = (request, result) => {
     body.id_day &&
     body.id_meal_type &&
     body.id_time &&
-    body.p_quantity &&
-    body.p_price
+    body.p_quantity
   )
     mealModel.editPlan(
       [
+        body.p_quantity,
+        body.p_price,
         body.id_subscription,
         body.id_day,
         body.id_meal_type,
         body.id_time,
-        body.p_quantity,
-        body.p_price,
       ],
       (error, rows) =>
         error
           ? result.status(500).send({ message: error })
           : rows.affectedRows > 0
-            ? result.status(202).send({ message: "New Plan" })
-            : result.status(500).send({ message: "Error on AddPlan()" })
+            ? result.status(202).send({ message: "Updated Plan" })
+            : result.status(500).send({ message: "Error on EditPlan()" })
     );
   else result.status(401).send({ message: "Empty Values" });
 };
 
 mealControl.removeClient = (request, result) =>
   mealModel.removeClient([ request.params.id_client ], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
+mealControl.removeRoute = (request, result) =>
+  mealModel.removeRoute([ request.params.id_route ], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)

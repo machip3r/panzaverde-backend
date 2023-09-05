@@ -101,6 +101,13 @@ mealModel.editClient = (data, callback) =>
     callback
   );
 
+mealModel.editRoute = (data, callback) =>
+  connection.query(
+    "UPDATE pvRoute SET r_name = ?, r_color = ? WHERE id_route = ?",
+    data,
+    callback
+  );
+
 mealModel.editSubscription = (data, callback) =>
   connection.query(
     "UPDATE pvSubscription SET id_client = ?, id_route = ?, s_specification = ?, s_status = ?, s_start_date = ?, s_final_date = ?, s_payment_date = ?, s_payment_type = ?, s_total = ? WHERE id_subscription = ?",
@@ -110,13 +117,16 @@ mealModel.editSubscription = (data, callback) =>
 
 mealModel.editPlan = (data, callback) =>
   connection.query(
-    "UPDATE pvPlan SET id_day = ?, id_meal_type = ?, id_time = ?, p_quantity = ?, p_price = ? WHERE id_subscription = ? AND id_day = ? AND id_meal_type = ? AND id_time = ?",
+    "UPDATE pvPlan SET p_quantity = ?, p_price = ? WHERE id_subscription = ? AND id_day = ? AND id_meal_type = ? AND id_time = ?",
     data,
     callback
   );
 
 mealModel.removeClient = (data, callback) =>
   connection.query("DELETE FROM pvClient WHERE id_client = ?", data, callback);
+
+mealModel.removeRoute = (data, callback) =>
+  connection.query("DELETE FROM pvRoute WHERE id_route = ?", data, callback);
 
 mealModel.removeSubscription = (data, callback) =>
   connection.query(

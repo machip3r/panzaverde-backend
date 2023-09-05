@@ -107,10 +107,12 @@ router.post("/plan/addPlanVCNE", mealControl.addPlanVCNE);
 router.post("/plan/addPlanVCNV", mealControl.addPlanVCNV);
 
 router.put("/client/editClient", mealControl.editClient);
+router.put("/client/editRoute", mealControl.editClient);
 router.put("/subscription/editSubscription", mealControl.editSubscription);
 router.put("/plan/editPlan", mealControl.editPlan);
 
 router.delete("/client/removeClient/:id_client", mealControl.removeClient);
+router.delete("/client/removeRoute/:id_route", mealControl.removeRoute);
 router.delete(
   "/subscription/removeSubscription/:id_subscription",
   mealControl.removeSubscription
