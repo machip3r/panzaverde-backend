@@ -112,7 +112,7 @@ router.put("/subscription/editSubscription", mealControl.editSubscription);
 router.put("/plan/editPlan", mealControl.editPlan);
 
 router.delete("/client/removeClient/:id_client", mealControl.removeClient);
-router.delete("/client/removeRoute/:id_route", mealControl.removeRoute);
+router.delete("/route/removeRoute/:id_route", mealControl.removeRoute);
 router.delete(
   "/subscription/removeSubscription/:id_subscription",
   mealControl.removeSubscription
