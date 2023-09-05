@@ -13,7 +13,7 @@ mealModel.allRoutes = (data, callback) =>
 
 mealModel.allClients = (data, callback) =>
   connection.query(
-    "SELECT c.id_client, c.c_name, c.c_address, c.c_phone, sn.sn_name, c.c_status FROM pvClient c INNER JOIN pvSocialNetwork sn ON c.id_social_network = sn.id_social_network",
+    "SELECT c.id_client, sn.id_social_network, c.c_name, c.c_address, c.c_phone, sn.sn_name, c.c_status FROM pvClient c INNER JOIN pvSocialNetwork sn ON c.id_social_network = sn.id_social_network",
     data,
     callback
   );
