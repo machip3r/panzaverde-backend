@@ -96,7 +96,7 @@ mealModel.addPlan = (data, callback) =>
 
 mealModel.editClient = (data, callback) =>
   connection.query(
-    "UPDATE pvClient SET id_social_network = ?, c_name = ?, c_address = ?, c_phone = ?, c_status = ? WHERE id_client = ?",
+    "UPDATE pvClient SET id_social_network = ?, c_name = ?, c_address = ?, c_phone = ? WHERE id_client = ?",
     data,
     callback
   );
