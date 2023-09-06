@@ -110,7 +110,7 @@ mealModel.editRoute = (data, callback) =>
 
 mealModel.editSubscription = (data, callback) =>
   connection.query(
-    "UPDATE pvSubscription SET id_client = ?, id_route = ?, s_specification = ?, s_status = ?, s_start_date = ?, s_final_date = ?, s_payment_date = ?, s_payment_type = ?, s_total = ? WHERE id_subscription = ?",
+    "UPDATE pvSubscription SET id_client = ?, id_route = ?, s_specification = ?, s_start_date = ?, s_final_date = ?, s_payment_date = ?, s_payment_type = ?, s_total = ? WHERE id_subscription = ?",
     data,
     callback
   );
