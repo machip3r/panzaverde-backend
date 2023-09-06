@@ -20,7 +20,7 @@ mealModel.allClients = (data, callback) =>
 
 mealModel.allSubscriptions = (data, callback) =>
   connection.query(
-    "SELECT s.id_subscription, c.id_client, r.id_route, c.c_name, r.r_name, DATE_FORMAT(s.s_start_date,'%d/%m/%Y') AS s_start_date, DATE_FORMAT(s.s_final_date,'%d/%m/%Y') AS s_final_date, s_specification, DATE_FORMAT(s_payment_date,'%d/%m/%Y') AS s_payment_date, s_payment_type, s.s_status FROM pvSubscription s INNER JOIN pvClient c ON s.id_client = c.id_client INNER JOIN pvRoute r ON s.id_route = r.id_route",
+    "SELECT s.id_subscription, c.id_client, r.id_route, c.c_name, r.r_name, DATE_FORMAT(s.s_start_date,'%d/%m/%Y') AS s_start_date, DATE_FORMAT(s.s_final_date,'%d/%m/%Y') AS s_final_date, s.s_specification, DATE_FORMAT(s.s_payment_date,'%d/%m/%Y') AS s_payment_date, s.s_payment_type, s.s_total, s.s_status FROM pvSubscription s INNER JOIN pvClient c ON s.id_client = c.id_client INNER JOIN pvRoute r ON s.id_route = r.id_route",
     data,
     callback
   );
