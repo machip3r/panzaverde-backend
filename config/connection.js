@@ -1,5 +1,5 @@
 "use strict";
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const config = require("./config.json");
 
 const databaseOptions = {
@@ -8,6 +8,7 @@ const databaseOptions = {
   user: config.mysql.user,
   password: config.mysql.password,
   database: config.mysql.database,
+  namedPlaceholders: true,
 };
 
 const connection = mysql.createPool(databaseOptions);
