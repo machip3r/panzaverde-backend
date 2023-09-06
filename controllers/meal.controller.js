@@ -253,9 +253,9 @@ mealControl.editSubscription = (request, result) => {
         body.s_specification,
         body.s_start_date,
         body.s_final_date,
-        s_payment_date,
-        s_payment_type,
-        s_total,
+        body.s_payment_date,
+        body.s_payment_type,
+        body.s_total,
         body.id_subscription,
       ],
       (error, rows) =>
