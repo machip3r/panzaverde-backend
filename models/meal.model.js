@@ -47,7 +47,7 @@ mealModel.allMealTypes = (data, callback) =>
 
 mealModel.allPlansBySubscription = (data, callback) =>
   connection.query(
-    "SELECT d.d_name, mt.mt_name, t.t_name, p.p_quantity FROM pvPlan p INNER JOIN pvSubscription s ON p.id_subscription = s.id_subscription INNER JOIN pvDay d ON p.id_day = d.id_day INNER JOIN pvMealType mt ON p.id_meal_type = mt.id_meal_type INNER JOIN pvTime t ON p.id_time = t.id_time WHERE s.id_subscription = ?",
+    "SELECT s.id_subscription, d.d_name, mt.mt_name, t.t_name, p.p_quantity FROM pvPlan p INNER JOIN pvSubscription s ON p.id_subscription = s.id_subscription INNER JOIN pvDay d ON p.id_day = d.id_day INNER JOIN pvMealType mt ON p.id_meal_type = mt.id_meal_type INNER JOIN pvTime t ON p.id_time = t.id_time WHERE s.id_subscription = ?",
     data,
     callback
   );
