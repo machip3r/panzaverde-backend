@@ -8,6 +8,7 @@ const databaseOptions = {
   user: config.mysql.user,
   password: config.mysql.password,
   database: config.mysql.database,
+  namedPlaceholders: true,
 };
 
 const connection = mysql.createPool(databaseOptions);
