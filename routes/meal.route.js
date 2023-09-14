@@ -8,13 +8,13 @@ const mealControl = require("../controllers/meal.controller");
     - Update and Delete on Subscription
     - Create, Update and Delete on Plan
 
-    - Create, Read, Update and Delete on Driver
     - Create, Read, Update and Delete on Route
 */
 
 router.get("/socialNetwork", mealControl.allSocialNetworks);
 router.get("/route", mealControl.allRoutes);
 router.get("/client", mealControl.allClients);
+router.get("/subscription", mealControl.allSubscriptions);
 router.get("/subscription/:id_client", mealControl.allSubscriptionsByClient);
 router.get("/day", mealControl.allDays);
 router.get("/time", mealControl.allTimes);
@@ -23,8 +23,8 @@ router.get("/plan/:id_subscription", mealControl.allPlansBySubscription);
 router.get("/", mealControl.allMeals);
 
 router.post("/client/addClient", mealControl.addClient);
+router.post("/route/addRoute", mealControl.addRoute);
 router.post("/subscription/addSubscription", mealControl.addSubscription);
-
 router.post("/plan/addPlan", mealControl.addPlan);
 
 router.post("/plan/addPlanLDN", mealControl.addPlanLDN);
@@ -107,10 +107,12 @@ router.post("/plan/addPlanVCNE", mealControl.addPlanVCNE);
 router.post("/plan/addPlanVCNV", mealControl.addPlanVCNV);
 
 router.put("/client/editClient", mealControl.editClient);
+router.put("/client/editRoute", mealControl.editClient);
 router.put("/subscription/editSubscription", mealControl.editSubscription);
 router.put("/plan/editPlan", mealControl.editPlan);
 
 router.delete("/client/removeClient/:id_client", mealControl.removeClient);
+router.delete("/route/removeRoute/:id_route", mealControl.removeRoute);
 router.delete(
   "/subscription/removeSubscription/:id_subscription",
   mealControl.removeSubscription

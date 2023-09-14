@@ -62,19 +62,19 @@ CREATE TABLE
         PRIMARY KEY (id_route)
     );
 
-INSERT INTO
-    pvRoute (
-        id_driver,
-        r_name,
-        r_color,
-        r_center_location
-    )
-VALUES (
-        1,
-        "Avenida Leon",
-        "Azul",
-        "Centro"
-    );
+/* INSERT INTO
+ pvRoute (
+ id_driver,
+ r_name,
+ r_color,
+ r_center_location
+ )
+ VALUES (
+ 1,
+ "Avenida Leon",
+ "Azul",
+ "Centro"
+ ); */
 
 /* MEAL */
 
@@ -218,5 +218,4 @@ CREATE TABLE
     );
 
 /* TRIGGERS */
-
-DELIMITER ; */
+/* DELIMITER ; */
