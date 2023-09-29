@@ -34,7 +34,7 @@ productModel.add = (product, callback) =>
 
 productModel.update = (product, callback) =>
   connection.execute(
-    sql = "UPDATE pvProduct SET p_name=:p_name, p_price=:p_price, p_stock=:p_stock, p_unit=:p_unit",
+    sql = "UPDATE pvProduct SET p_name=:p_name, p_price=:p_price, p_stock=:p_stock, p_unit=:p_unit WHERE id_product=:id_product",
     values = product,
     callback = callback,
   );
