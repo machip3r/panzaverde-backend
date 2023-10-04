@@ -5,6 +5,7 @@ const app = express();
 
 const foodRoute = require("./routes/meal.route");
 const productsRoute = require("./routes/product.route");
+const ordersRoute = require("./routes/order.route");
 
 app.use(cors());
 app.use(morgan("tiny"));
@@ -14,5 +15,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/meal", foodRoute);
 app.use("/products", productsRoute);
+app.use("/orders", ordersRoute);
 
 module.exports = app;
