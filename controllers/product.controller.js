@@ -18,7 +18,7 @@ productController.getById = (req, res) => {
     productModel.find(product, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send(rows)
+        : res.status(200).send(rows[0])
     );
   else res.status(500).send({ message: validation.error.details });
 }
@@ -36,6 +36,18 @@ productController.getByName = (req, res) => {
 }
 
 productController.add = (req, res) => {
+  if (!req.body.product) {
+    const products = req.body;
+    const validation = productSchema.addList.validate(products);
+    if (validation) {
+      return productModel.addList(products, (error, _) =>
+        error
+          ? res.status(500).send({ message: error })
+          : res.status(200).send({ message: 'Products added' })
+      );
+    }
+  }
+
   const product = req.body.product;
   const validation = productSchema.create.validate(product);
   if (validation)

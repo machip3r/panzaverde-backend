@@ -42,36 +42,45 @@ orderModel.detail = (order, callback) => {
 
 orderModel.add = async (order, callback) => {
   let o_total = 0, id_order;
-  connection.query("BEGIN TRANSACTION");
-  try {
+  connection.execute("START TRANSACTION", (error, _) => {
+    if (error)
+      return connection.execute("ROLLBACK", () => callback("Start transaction failed"));
+
     connection.execute(
       sql = "INSERT INTO pvOrder(o_total) VALUES (:o_total)",
       values = { o_total },
-      (_, rows) => {
+      (error, rows) => {
+        if (error)
+          return connection.execute("ROLLBACK", () => callback("Insert in pvOrder error"));
+
         id_order = rows.insertId;
-        console.log(id_order)
-
-        order.foreach((product) => {
-          console.log(product);
+        let opSql = 'INSERT INTO pvOrderProduct(id_product, id_order, op_quantity, op_price) VALUES ';
+        order.forEach((product) => {
+          opSql += '(' + [connection.escape(product.id_product), connection.escape(id_order),
+          connection.escape(product.op_quantity), connection.escape(product.p_price)]
+            .join(', ') + '),';
           o_total += product.p_price;
-          connection.execute(
-            sql = `INSERT INTO pvOrderProduct(id_product, id_order, op_quantity, op_price)
-                            VALUES (:id_product, :id_order, :op_quantity, :p_price)`,
-            values = { ...product, id_order },
-          );
         });
-        connection.execute(
-          sql = "UPDATE pvOrder SET o_total=:o_total",
-          values = { o_total },
-        );
+        opSql = opSql.substring(0, opSql.length - 1);
 
+        connection.execute(
+          sql = opSql,
+          (error, _) => {
+            if (error)
+              return connection.execute("ROLLBACK", () => callback("Inserts in pvOrderProduct failed"))
+
+            connection.execute(
+              sql = "UPDATE pvOrder SET o_total=:o_total WHERE id_order=:id_order",
+              values = { o_total, id_order },
+              (error, _) => {
+                if (error)
+                  return connection.execute("ROLLBACK", () => callback("Update pvOrder error"));
+
+                return connection.execute("COMMIT", () => callback());
+              });
+          });
       });
-    connection.query("COMMIT");
-    return false;
-  } catch {
-    connection.query("ROLLBACK")
-    return true;
-  }
+  });
 }
 
 orderModel.update = (order, callback) =>

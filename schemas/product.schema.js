@@ -35,6 +35,7 @@ productSchema.update = Joi.object({
     .min(0),
 });
 
+productSchema.addList = Joi.array().items(productSchema.create).required();
 productSchema.id = Joi.number().integer().required();
 productSchema.name = Joi.string().alphanum().min(3).required();
 productSchema.price = Joi.number().min(0.0).required();

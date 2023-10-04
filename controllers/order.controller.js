@@ -52,12 +52,11 @@ orderController.getByStatus = (req, res) => {
 orderController.add = (req, res) => {
   const order = req.body;
   const validation = orderSchema.create.validate(order);
-  if (validation) {
-    const error = orderModel.add(order);
-    (error)
-      ? res.status(500).send({ message: error })
-      : res.status(200).send({ message: 'Order added' });
-  }
+  if (validation)
+    orderModel.add(order, (error, _) =>
+      error
+        ? res.status(500).send({ message: error })
+        : res.status(200).send({ message: 'Order added' }));
   else res.status(500).send({ message: validation.error.details });
 }
 
