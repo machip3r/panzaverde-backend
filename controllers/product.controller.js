@@ -3,35 +3,37 @@ const productSchema = require('../schemas/product.schema');
 
 const productController = () => {};
 
-productController.getAll = (_, res) => {
-  productModel.all(_, (error, rows) =>
-    error
-      ? res.status(500).send({ message: error })
-      : res.status(200).send(rows)
-  );
+productController.getAll = (req, res) => {
+  const params = req.params;
+  const validation = productSchema.pagination.validate(params);
+  if (validation)
+    productModel.all(params, (error, rows) => {
+      if (error) res.status(500).send({ message: error });
+      else res.status(200).send(rows);
+    });
+  else res.status(500).send({ message: validation.error.details });
 }
 
 productController.getById = (req, res) => {
-  const product = { id_product: req.params.id };
+  const product = req.params;
   const validation = productSchema.id.validate(product);
   if (validation)
-    productModel.find(product, (error, rows) =>
-      error
-        ? res.status(500).send({ message: error })
-        : res.status(200).send(rows[0])
-    );
+    productModel.find(product, (error, rows) => {
+      if (error) res.status(500).send({ message: error });
+      else if (rows.length == 0) res.status(202).send({ message: 'No data' });
+      else res.status(200).send(rows[0])
+    });
   else res.status(500).send({ message: validation.error.details });
 }
 
 productController.getByName = (req, res) => {
-  const product = { p_name: req.params.p_name };
-  const validation = productSchema.name.validate(product);
+  const product = req.params;
+  const validation = productSchema.p_name.validate(product);
   if (validation)
-    productModel.findByName(product, (error, rows) =>
-      error
-        ? res.status(500).send({ message: error })
-        : res.status(200).send(rows)
-    );
+    productModel.findByName(product, (error, rows) => {
+      if (error) res.status(500).send({ message: error });
+      else res.status(200).send(rows);
+    });
   else res.status(500).send({ message: validation.error.details });
 }
 
@@ -72,7 +74,8 @@ productController.update = (req, res) => {
 }
 
 productController.delete = (req, res) => {
-  const product = { id_product: req.params.id };
+  const product = req.body;
+  console.log(product)
   const validation = productSchema.id.validate(product);
   if (validation)
     productModel.delete(product, (error, _) =>
