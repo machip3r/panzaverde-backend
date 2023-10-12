@@ -3,28 +3,31 @@ const orderSchema = require('../schemas/order.schema');
 
 const orderController = () => {};
 
-orderController.getAll = (_, res) => {
-  orderModel.all(_, (error, rows) =>
-    error
-      ? res.status(500).send({ message: error })
-      : res.status(200).send(rows)
-  );
+orderController.getAll = (req, res) => {
+  const data = req.params;
+  const validation = orderSchema.pagination.validate(data);
+  if (validation)
+    orderModel.all(data, (error, rows) =>
+      error
+        ? res.status(500).send({ message: error })
+        : res.status(200).send(rows)
+    );
 }
 
 orderController.getById = (req, res) => {
-  const order = { id_order: req.params.id };
+  const order = req.params;
   const validation = orderSchema.id.validate(order);
   if (validation)
     orderModel.find(order, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send(rows)
+        : res.status(200).send(rows[0])
     );
   else res.status(500).send({ message: validation.error.details });
 }
 
 orderController.getDetail = (req, res) => {
-  const order = { id_order: req.params.id }
+  const order = req.params;
   const validation = orderSchema.id.validate(order);
   if (validation)
     orderModel.find(order, (error, rows) => {
@@ -38,10 +41,22 @@ orderController.getDetail = (req, res) => {
 }
 
 orderController.getByStatus = (req, res) => {
-  const order = { o_status: req.params.o_status };
-  const validation = orderSchema.name.validate(order);
+  const order = req.params;
+  const validation = orderSchema.o_status.validate(order);
   if (validation)
     orderModel.findByName(order, (error, rows) =>
+      error
+        ? res.status(500).send({ message: error })
+        : res.status(200).send(rows)
+    );
+  else res.status(500).send({ message: validation.error.details });
+}
+
+orderController.getByDate = (req, res) => {
+  const order = req.params;
+  const validation = orderSchema.o_date.validate(order);
+  if (validation)
+    orderModel.findByDate(order, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
         : res.status(200).send(rows)

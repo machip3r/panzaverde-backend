@@ -35,9 +35,31 @@ productSchema.update = Joi.object({
     .min(0),
 });
 
+productSchema.pagination = Joi.object({
+  offset: Joi.number()
+    .min(0)
+    .integer(),
+  count: Joi.number()
+    .min(0)
+    .integer(),
+});
+
+productSchema.p_name = Joi.object({
+  p_name: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(30)
+    .required(),
+  offset: Joi.number()
+    .min(0)
+    .integer(),
+  count: Joi.number()
+    .min(0)
+    .integer(),
+});
+
 productSchema.addList = Joi.array().items(productSchema.create).required();
 productSchema.id = Joi.number().integer().required();
-productSchema.name = Joi.string().alphanum().min(3).required();
 productSchema.price = Joi.number().min(0.0).required();
 productSchema.stock = Joi.number().min(0).required();
 productSchema.unit = Joi.number().min(0).required();

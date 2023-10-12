@@ -2,26 +2,72 @@ const connection = require('../config/connection');
 
 const productModel = () => {};
 
-productModel.all = (_, callback) =>
+productModel.all = (data, callback) => {
+  let sql = "SELECT * FROM pvProduct";
+  let page;
+  if (data.hasOwnProperty('offset') && data.hasOwnProperty('count')) {
+    sql += ' LIMIT :offset, :count';
+    page = parseInt(data.offset);
+    data.offset--;
+    data.offset *= data.count;
+  } else if (data.hasOwnProperty('count')) {
+    sql += ' LIMIT :count';
+    page = 1;
+  }
   connection.execute(
-    sql = "SELECT * FROM pvProduct",
-    callback = callback,
+    sql,
+    values = data,
+    (error, products) => {
+      if (!data.hasOwnProperty('count'))
+        return callback(error, { max_pages: 1, page: 1, records: products.length, products });
+      connection.execute(
+        "SELECT COUNT(id_product) as max_pages FROM pvProduct LIMIT 1",
+        (error, rows) => {
+          const max_pages = Math.round(rows[0].max_pages / data.count);
+          return callback(error, { max_pages, page, records: products.length, products });
+        }
+      );
+    }
   );
+}
 
 productModel.find = (product, callback) => {
   connection.execute(
-    sql = "SELECT * FROM pvProduct WHERE id_product = :id_product",
+    sql = "SELECT * FROM pvProduct WHERE id_product = :id_product LIMIT 1",
     values = product,
     callback = callback,
   );
 }
 
-productModel.findByName = (product, callback) => {
-  product.p_name = `%${product.p_name}%`;
+productModel.findByName = (data, callback) => {
+  let sql = "SELECT * FROM pvProduct WHERE p_name LIKE :p_name";
+  let page;
+  if (data.hasOwnProperty('offset') && data.hasOwnProperty('count')) {
+    sql += ' LIMIT :offset, :count';
+    page = parseInt(data.offset);
+    data.offset--;
+    data.offset *= data.count;
+  } else if (data.hasOwnProperty('count')) {
+    sql += ' LIMIT :count';
+    page = 1;
+  }
+
+  data.p_name = `%${data.p_name}%`;
   connection.execute(
-    sql = "SELECT * FROM pvProduct WHERE p_name LIKE :p_name",
-    values = product,
-    callback = callback,
+    sql,
+    values = data,
+    (error, products) => {
+      if (!data.hasOwnProperty('count'))
+        return callback(error, { max_pages: 1, page: 1, records: products.length, products });
+      connection.execute(
+        "SELECT COUNT(id_product) AS max_pages FROM pvProduct WHERE p_name LIKE :p_name LIMIT 1",
+        values = data,
+        (error, rows) => {
+          const max_pages = Math.round(rows[0].max_pages / data.count);
+          return callback(error, { max_pages, page, records: products.length, products });
+        }
+      );
+    }
   );
 }
 
@@ -34,7 +80,7 @@ productModel.add = (product, callback) => {
 }
 
 productModel.addList = (products, callback) =>
-  connection.execute(
+  connection.query(
     sql = "START TRANSACTION",
     (error, _) => {
       if (error)
@@ -53,7 +99,7 @@ productModel.addList = (products, callback) =>
         return connection.execute("COMMIT", () => callback());
       });
     }
-  )
+  );
 
 productModel.update = (product, callback) =>
   connection.execute(
