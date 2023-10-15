@@ -4,7 +4,7 @@
   "description": "System to manage the food control in Panza Verde",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/main.js",
+    "dev": "nodemon ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

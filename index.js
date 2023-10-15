@@ -1,4 +1,4 @@
-const app = require("./app");
+const app = require("./src/app");
 const http = require("http").Server(app);
 const PORT = process.env.PORT || 3003;
 
