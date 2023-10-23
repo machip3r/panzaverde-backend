@@ -122,15 +122,23 @@ mealModel.editPlan = (data, callback) =>
     callback
   );
 
+/* mealModel.removeClient = (data, callback) =>
+  connection.query("DELETE FROM pvClient WHERE id_client = ?", data, callback); */
 mealModel.removeClient = (data, callback) =>
-  connection.query("DELETE FROM pvClient WHERE id_client = ?", data, callback);
+  connection.query("UPDATE pvClient SET c_status='i' WHERE id_client = ?", data, callback);
 
 mealModel.removeRoute = (data, callback) =>
   connection.query("DELETE FROM pvRoute WHERE id_route = ?", data, callback);
 
-mealModel.removeSubscription = (data, callback) =>
+/* mealModel.removeSubscription = (data, callback) =>
   connection.query(
     "DELETE FROM pvSubscription WHERE id_subscription = ?",
+    data,
+    callback
+  ); */
+mealModel.removeSubscription = (data, callback) =>
+  connection.query(
+    "UPDATE pvSubscription SET s_status='i' WHERE id_subscription = ?",
     data,
     callback
   );
