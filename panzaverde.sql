@@ -1,6 +1,5 @@
 CREATE DATABASE IF NOT EXISTS panzaverde;
 
-
 USE panzaverde;
 
 /* USER */
@@ -62,20 +61,6 @@ CREATE TABLE
         PRIMARY KEY (id_route)
     );
 
-/* INSERT INTO
- pvRoute (
- id_driver,
- r_name,
- r_color,
- r_center_location
- )
- VALUES (
- 1,
- "Avenida Leon",
- "Azul",
- "Centro"
- ); */
-
 /* MEAL */
 
 CREATE TABLE
@@ -86,17 +71,13 @@ CREATE TABLE
         PRIMARY KEY (id_social_network)
     );
 
-INSERT INTO pvSocialNetwork (sn_name) VALUES ("Instagram");
-
-INSERT INTO pvSocialNetwork (sn_name) VALUES ("WhatsApp");
-
 CREATE TABLE
     IF NOT EXISTS pvClient(
         id_client INT UNSIGNED AUTO_INCREMENT,
         id_social_network TINYINT UNSIGNED NOT NULL,
         c_name VARCHAR(80) NOT NULL,
-        c_address VARCHAR(300) NOT NULL,
-        c_phone VARCHAR(10) NOT NULL,
+        c_address VARCHAR(300) NULL,
+        c_phone VARCHAR(10) NULL,
         c_status CHAR(1) NOT NULL DEFAULT 'a',
         CONSTRAINT fk_client_social_network FOREIGN KEY (id_social_network) REFERENCES pvSocialNetwork (id_social_network) ON UPDATE CASCADE ON DELETE CASCADE,
         PRIMARY KEY (id_client)
@@ -109,8 +90,8 @@ CREATE TABLE
         id_route TINYINT UNSIGNED NOT NULL,
         s_specification VARCHAR(300) NULL,
         s_status CHAR(1) NOT NULL DEFAULT 'a',
-        s_start_date DATE NOT NULL,
-        s_final_date DATE NOT NULL,
+        s_start_date DATE NULL,
+        s_final_date DATE NULL,
         s_payment_date DATE NULL,
         s_payment_type VARCHAR(20) NULL,
         s_total DECIMAL(10, 2) NULL,
@@ -218,4 +199,5 @@ CREATE TABLE
     );
 
 /* TRIGGERS */
+
 /* DELIMITER ; */
