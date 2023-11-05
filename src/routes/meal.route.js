@@ -42,7 +42,6 @@ router.post("/plan/addPlanLCNK", mealControl.addPlanLCNK);
 router.post("/plan/addPlanLCNE", mealControl.addPlanLCNE);
 router.post("/plan/addPlanLCNV", mealControl.addPlanLCNV);
 
-
 router.post("/plan/addPlanMDN", mealControl.addPlanMDN);
 router.post("/plan/addPlanMDK", mealControl.addPlanMDK);
 router.post("/plan/addPlanMDE", mealControl.addPlanMDE);
@@ -57,7 +56,6 @@ router.post("/plan/addPlanMCNN", mealControl.addPlanMCNN);
 router.post("/plan/addPlanMCNK", mealControl.addPlanMCNK);
 router.post("/plan/addPlanMCNE", mealControl.addPlanMCNE);
 router.post("/plan/addPlanMCNV", mealControl.addPlanMCNV);
-
 
 router.post("/plan/addPlanMiDN", mealControl.addPlanMiDN);
 router.post("/plan/addPlanMiDK", mealControl.addPlanMiDK);
@@ -74,7 +72,6 @@ router.post("/plan/addPlanMiCNK", mealControl.addPlanMiCNK);
 router.post("/plan/addPlanMiCNE", mealControl.addPlanMiCNE);
 router.post("/plan/addPlanMiCNV", mealControl.addPlanMiCNV);
 
-
 router.post("/plan/addPlanJDN", mealControl.addPlanJDN);
 router.post("/plan/addPlanJDK", mealControl.addPlanJDK);
 router.post("/plan/addPlanJDE", mealControl.addPlanJDE);
@@ -89,7 +86,6 @@ router.post("/plan/addPlanJCNN", mealControl.addPlanJCNN);
 router.post("/plan/addPlanJCNK", mealControl.addPlanJCNK);
 router.post("/plan/addPlanJCNE", mealControl.addPlanJCNE);
 router.post("/plan/addPlanJCNV", mealControl.addPlanJCNV);
-
 
 router.post("/plan/addPlanVDN", mealControl.addPlanVDN);
 router.post("/plan/addPlanVDK", mealControl.addPlanVDK);
@@ -115,7 +111,7 @@ router.delete("/client/removeClient/:id_client", mealControl.removeClient);
 router.delete("/route/removeRoute/:id_route", mealControl.removeRoute);
 router.delete(
   "/subscription/removeSubscription/:id_subscription",
-  mealControl.removeSubscription
+  mealControl.removeSubscription,
 );
 router.delete("/plan/removePlan", mealControl.removePlan);
 

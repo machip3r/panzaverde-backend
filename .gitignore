@@ -25,3 +25,4 @@ pnpm-debug.log*
 # AG files
 package-lock.json
 .gitignore
+src/config/*

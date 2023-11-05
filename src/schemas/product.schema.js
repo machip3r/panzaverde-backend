@@ -1,61 +1,30 @@
-const Joi = require('joi');
+const Joi = require("joi");
 const productSchema = () => {};
 
 productSchema.create = Joi.object({
-  p_name: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(30)
-    .required(),
-  p_price: Joi.number()
-    .min(0.0)
-    .required(),
-  p_stock: Joi.number()
-    .integer()
-    .min(0)
-    .required(),
-  p_unit: Joi.number()
-    .min(0)
-    .required(),
+  p_name: Joi.string().alphanum().min(3).max(30).required(),
+  p_price: Joi.number().min(0.0).required(),
+  p_stock: Joi.number().integer().min(0).required(),
+  p_unit: Joi.number().min(0).required(),
 });
 
 productSchema.update = Joi.object({
-  id_product: Joi.number()
-    .integer()
-    .required(),
-  p_name: Joi.string()
-    .alphanum()
-    .min(3),
-  p_price: Joi.number()
-    .min(0.0),
-  p_stock: Joi.number()
-    .integer()
-    .min(0),
-  p_unit: Joi.number()
-    .min(0),
+  id_product: Joi.number().integer().required(),
+  p_name: Joi.string().alphanum().min(3),
+  p_price: Joi.number().min(0.0),
+  p_stock: Joi.number().integer().min(0),
+  p_unit: Joi.number().min(0),
 });
 
 productSchema.pagination = Joi.object({
-  offset: Joi.number()
-    .min(0)
-    .integer(),
-  count: Joi.number()
-    .min(0)
-    .integer(),
+  offset: Joi.number().min(0).integer(),
+  count: Joi.number().min(0).integer(),
 });
 
 productSchema.p_name = Joi.object({
-  p_name: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(30)
-    .required(),
-  offset: Joi.number()
-    .min(0)
-    .integer(),
-  count: Joi.number()
-    .min(0)
-    .integer(),
+  p_name: Joi.string().alphanum().min(3).max(30).required(),
+  offset: Joi.number().min(0).integer(),
+  count: Joi.number().min(0).integer(),
 });
 
 productSchema.addList = Joi.array().items(productSchema.create).required();
