@@ -1,5 +1,5 @@
-const orderModel = require('../models/order.model');
-const orderSchema = require('../schemas/order.schema');
+const orderModel = require("../models/order.model");
+const orderSchema = require("../schemas/order.schema");
 
 const orderController = () => {};
 
@@ -10,9 +10,9 @@ orderController.getAll = (req, res) => {
     orderModel.all(data, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send(rows)
+        : res.status(200).send(rows),
     );
-}
+};
 
 orderController.getById = (req, res) => {
   const order = req.params;
@@ -21,10 +21,10 @@ orderController.getById = (req, res) => {
     orderModel.find(order, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send(rows[0])
+        : res.status(200).send(rows[0]),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 orderController.getDetail = (req, res) => {
   const order = req.params;
@@ -38,7 +38,7 @@ orderController.getDetail = (req, res) => {
       });
     });
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 orderController.getByStatus = (req, res) => {
   const order = req.params;
@@ -47,10 +47,10 @@ orderController.getByStatus = (req, res) => {
     orderModel.findByName(order, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send(rows)
+        : res.status(200).send(rows),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 orderController.getByDate = (req, res) => {
   const order = req.params;
@@ -59,10 +59,10 @@ orderController.getByDate = (req, res) => {
     orderModel.findByDate(order, (error, rows) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send(rows)
+        : res.status(200).send(rows),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 orderController.add = (req, res) => {
   const order = req.body;
@@ -71,9 +71,10 @@ orderController.add = (req, res) => {
     orderModel.add(order, (error, _) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send({ message: 'Order added' }));
+        : res.status(200).send({ message: "Order added" }),
+    );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 orderController.update = (req, res) => {
   const order = req.body.order;
@@ -82,10 +83,10 @@ orderController.update = (req, res) => {
     orderModel.update(order, (error, _) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send({ message: 'Order modified' })
+        : res.status(200).send({ message: "Order modified" }),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 orderController.delete = (req, res) => {
   const order = { id_order: req.params.id };
@@ -94,9 +95,9 @@ orderController.delete = (req, res) => {
     orderModel.delete(order, (error, _) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send({ message: 'Order deleted' })
+        : res.status(200).send({ message: "Order deleted" }),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 module.exports = orderController;

@@ -1,6 +1,6 @@
 "use strict";
 const mysql = require("mysql2");
-const config = require("./config.mac.json");
+const config = require("./config.json");
 
 const databaseOptions = {
   host: config.mysql.host,

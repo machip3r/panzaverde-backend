@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS panzaverde;
 CREATE DATABASE IF NOT EXISTS panzaverde;
 
 USE panzaverde;

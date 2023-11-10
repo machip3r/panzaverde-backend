@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./index.js",
+    "seed": "node ./database/app.js",
+    "format": "prettier --write \"src/**/*.js\"",
+    "format-database": "prettier --write \"database/**/*.js\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,8 +23,12 @@
     "mysql2": "^3.6.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.2.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
     "supertest": "^6.3.3"
   },
   "engines": {

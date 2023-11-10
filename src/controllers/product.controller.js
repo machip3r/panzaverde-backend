@@ -1,5 +1,5 @@
-const productModel = require('../models/product.model');
-const productSchema = require('../schemas/product.schema');
+const productModel = require("../models/product.model");
+const productSchema = require("../schemas/product.schema");
 
 const productController = () => {};
 
@@ -12,7 +12,7 @@ productController.getAll = (req, res) => {
       else res.status(200).send(rows);
     });
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 productController.getById = (req, res) => {
   const product = req.params;
@@ -20,11 +20,11 @@ productController.getById = (req, res) => {
   if (validation)
     productModel.find(product, (error, rows) => {
       if (error) res.status(500).send({ message: error });
-      else if (rows.length == 0) res.status(202).send({ message: 'No data' });
-      else res.status(200).send(rows[0])
+      else if (rows.length == 0) res.status(202).send({ message: "No data" });
+      else res.status(200).send(rows[0]);
     });
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 productController.getByName = (req, res) => {
   const product = req.params;
@@ -35,7 +35,7 @@ productController.getByName = (req, res) => {
       else res.status(200).send(rows);
     });
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 productController.add = (req, res) => {
   if (!req.body.product) {
@@ -45,7 +45,7 @@ productController.add = (req, res) => {
       return productModel.addList(products, (error, _) =>
         error
           ? res.status(500).send({ message: error })
-          : res.status(200).send({ message: 'Products added' })
+          : res.status(200).send({ message: "Products added" }),
       );
     }
   }
@@ -56,10 +56,10 @@ productController.add = (req, res) => {
     productModel.add(product, (error, _) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send({ message: 'Product added' })
+        : res.status(200).send({ message: "Product added" }),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 productController.update = (req, res) => {
   const product = req.body.product;
@@ -68,22 +68,22 @@ productController.update = (req, res) => {
     productModel.update(product, (error, _) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send({ message: 'Product modified' })
+        : res.status(200).send({ message: "Product modified" }),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 productController.delete = (req, res) => {
   const product = req.body;
-  console.log(product)
+  console.log(product);
   const validation = productSchema.id.validate(product);
   if (validation)
     productModel.delete(product, (error, _) =>
       error
         ? res.status(500).send({ message: error })
-        : res.status(200).send({ message: 'Product deleted' })
+        : res.status(200).send({ message: "Product deleted" }),
     );
   else res.status(500).send({ message: validation.error.details });
-}
+};
 
 module.exports = productController;
