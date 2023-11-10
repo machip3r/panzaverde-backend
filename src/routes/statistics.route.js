@@ -9,10 +9,20 @@ router.get(
   statisticsController.getUsersCountByStatus,
 );
 router.get("/users/:id_client", statisticsController.getUserStatistics);
-router.get("/tickets", statisticsController.getUserStatistics);
-router.get("/tickets/:id_user", statisticsController.getUserMeanTicket);
-router.get("/sales", statisticsController.getUserMeanTicket);
-router.get("/meals", statisticsController.getUserMeanTicket);
-router.get("/platforms", statisticsController.getUserMeanTicket);
+router.get("/tickets", statisticsController.getUsersMeanTicket);
+router.get("/tickets/:id_client", statisticsController.getUserMeanTicket);
+router.get("/status/clients", statisticsController.getUsersCountByStatus);
+router.get(
+  "/sales/:start_date/:end_date",
+  statisticsController.getSalesByRange,
+);
+router.get(
+  "/sales/subscription/:start_date/:end_date",
+  statisticsController.getSalesByRangeAndSubscription,
+);
+router.get(
+  "/sales/socialNetwork/:start_date/:end_date",
+  statisticsController.getSalesByRangeAndSocialNetwork,
+);
 
 module.exports = router;
