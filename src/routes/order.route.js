@@ -7,10 +7,11 @@ router.get("/id/:id_order", orderController.getById);
 router.get("/id/:id_order/detail", orderController.getDetail);
 router.get("/date/:o_date", orderController.getByDate);
 router.get("/date/:o_date/:count", orderController.getByDate);
-router.get("/date/:o_date/:count/:offset", orderController.getByDate);
+router.get("/date/:o_date/:count/:page", orderController.getByDate);
 router.get("/", orderController.getAll);
 router.get("/:count", orderController.getAll);
-router.get("/:count/:offset", orderController.getAll);
+router.get("/:count/:page", orderController.getAll);
+
 router.post("/", orderController.add);
 router.put("/", orderController.update);
 router.delete("/", orderController.delete);

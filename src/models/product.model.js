@@ -2,98 +2,78 @@ const connection = require("../config/connection");
 
 const productModel = () => {};
 
-productModel.all = (data, callback) => {
-  let sql = "SELECT * FROM pvProduct";
-  let page;
-  if (data.hasOwnProperty("offset") && data.hasOwnProperty("count")) {
-    sql += " LIMIT :offset, :count";
-    page = parseInt(data.offset);
-    data.offset--;
-    data.offset *= data.count;
-  } else if (data.hasOwnProperty("count")) {
-    sql += " LIMIT :count";
-    page = 1;
-  }
-  connection.execute(sql, (values = data), (error, products) => {
-    if (!data.hasOwnProperty("count"))
-      return callback(error, {
-        max_pages: 1,
-        page: 1,
-        records: products.length,
-        products,
-      });
-    connection.execute(
-      "SELECT COUNT(id_product) as max_pages FROM pvProduct LIMIT 1",
-      (error, rows) => {
-        const max_pages = Math.round(rows[0].max_pages / data.count);
-        return callback(error, {
-          max_pages,
-          page,
-          records: products.length,
-          products,
-        });
-      },
+productModel.all = async ({ count, page }) => {
+  const db = connection.promise();
+  const offset = count * page;
+  const response = { products: [], n_products: 0, page, n_pages: 0 };
+  let error = null;
+
+  let sqlProducts = "SELECT * FROM pvProduct";
+  if (count > 0)
+    sqlProducts += ` LIMIT ${db.escape(offset)}, ${db.escape(count)}`;
+
+  try {
+    const products = await db.execute(sqlProducts);
+    const n_pages = await db.execute(
+      "SELECT COUNT(id_product) AS n_products FROM pvProduct",
     );
-  });
+    response.products = products[0];
+    const np = n_pages[0][0].n_products;
+    response.n_pages = Math.ceil(np / (count > 0 ? count : np));
+    response.n_products = response.products.length;
+  } catch (err) {
+    error = "Error getting products";
+  }
+  db.releaseConnection();
+  return { response, error };
 };
 
 productModel.find = (product, callback) => {
   connection.execute(
-    (sql = "SELECT * FROM pvProduct WHERE id_product = :id_product LIMIT 1"),
-    (values = product),
-    (callback = callback),
+    "SELECT * FROM pvProduct WHERE id_product = :id_product LIMIT 1",
+    product,
+    callback,
   );
 };
 
-productModel.findByName = (data, callback) => {
-  let sql = "SELECT * FROM pvProduct WHERE p_name LIKE :p_name";
-  let page;
-  if (data.hasOwnProperty("offset") && data.hasOwnProperty("count")) {
-    sql += " LIMIT :offset, :count";
-    page = parseInt(data.offset);
-    data.offset--;
-    data.offset *= data.count;
-  } else if (data.hasOwnProperty("count")) {
-    sql += " LIMIT :count";
-    page = 1;
-  }
+productModel.findByName = async ({ p_name, count, page }) => {
+  const db = connection.promise();
+  const offset = count * page;
+  p_name = `%${p_name}%`;
+  const response = { products: [], n_products: 0, page, n_pages: 0 };
+  let error = null;
 
-  data.p_name = `%${data.p_name}%`;
-  connection.execute(sql, (values = data), (error, products) => {
-    if (!data.hasOwnProperty("count"))
-      return callback(error, {
-        max_pages: 1,
-        page: 1,
-        records: products.length,
-        products,
-      });
-    connection.execute(
-      "SELECT COUNT(id_product) AS max_pages FROM pvProduct WHERE p_name LIKE :p_name LIMIT 1",
-      (values = data),
-      (error, rows) => {
-        const max_pages = Math.round(rows[0].max_pages / data.count);
-        return callback(error, {
-          max_pages,
-          page,
-          records: products.length,
-          products,
-        });
-      },
+  let sqlProducts = `SELECT * FROM pvProduct WHERE p_name LIKE :p_name`;
+  if (count > 0)
+    sqlProducts += ` LIMIT ${db.escape(offset)}, ${db.escape(count)}`;
+
+  try {
+    const products = await db.execute(sqlProducts, { p_name });
+    const n_pages = await db.execute(
+      "SELECT COUNT(id_product) AS n_products FROM pvProduct WHERE p_name LIKE :p_name",
+      { p_name },
     );
-  });
+    response.products = products[0];
+    const np = n_pages[0][0].n_products;
+    response.n_pages = Math.ceil(np / (count > 0 ? count : np));
+    response.n_products = response.products.length;
+  } catch (err) {
+    error = "Error getting products";
+  }
+  db.releaseConnection();
+  return { response, error };
 };
 
 productModel.add = (product, callback) => {
   connection.execute(
-    (sql =
-      "INSERT INTO pvProduct(p_name, p_price, p_stock, p_unit) VALUES (:p_name, :p_price, :p_stock, :p_unit)"),
-    (values = product),
-    (callback = callback),
+    "INSERT INTO pvProduct(p_name, p_price, p_stock, p_unit) VALUES (:p_name, :p_price, :p_stock, :p_unit)",
+    product,
+    callback,
   );
 };
 
 productModel.addList = (products, callback) =>
-  connection.query((sql = "START TRANSACTION"), (error, _) => {
+  connection.query("START TRANSACTION", (error, _) => {
     if (error)
       return connection.execute("ROLLBACK", () =>
         callback("Start transaction failed"),
@@ -124,17 +104,16 @@ productModel.addList = (products, callback) =>
 
 productModel.update = (product, callback) =>
   connection.execute(
-    (sql =
-      "UPDATE pvProduct SET p_name=:p_name, p_price=:p_price, p_stock=:p_stock, p_unit=:p_unit WHERE id_product=:id_product"),
-    (values = product),
-    (callback = callback),
+    "UPDATE pvProduct SET p_name=:p_name, p_price=:p_price, p_stock=:p_stock, p_unit=:p_unit WHERE id_product=:id_product",
+    product,
+    callback,
   );
 
 productModel.delete = (product, callback) =>
   connection.execute(
-    (sql = "DELETE FROM pvProduct WHERE id_product = :id_product"),
-    (values = product),
-    (callback = callback),
+    "DELETE FROM pvProduct WHERE id_product = :id_product",
+    product,
+    callback,
   );
 
 module.exports = productModel;

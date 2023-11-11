@@ -3,15 +3,16 @@ const orderSchema = require("../schemas/order.schema");
 
 const orderController = () => {};
 
-orderController.getAll = (req, res) => {
-  const data = req.params;
-  const validation = orderSchema.pagination.validate(data);
-  if (validation)
-    orderModel.all(data, (error, rows) =>
-      error
-        ? res.status(500).send({ message: error })
-        : res.status(200).send(rows),
-    );
+orderController.getAll = async (req, res) => {
+  const params = {
+    count: parseInt(req.params.count) & -1,
+    page: parseInt(req.params.page) | 0,
+  };
+  if (params.page < 0) params.page = 0;
+  const { response, error } = await orderModel.all(params);
+  if (error) res.status(500).send(error);
+  else if (response.n_orders == 0) res.status(204).send();
+  else res.status(200).send(response);
 };
 
 orderController.getById = (req, res) => {
@@ -52,16 +53,21 @@ orderController.getByStatus = (req, res) => {
   else res.status(500).send({ message: validation.error.details });
 };
 
-orderController.getByDate = (req, res) => {
+orderController.getByDate = async (req, res) => {
   const order = req.params;
   const validation = orderSchema.o_date.validate(order);
-  if (validation)
-    orderModel.findByDate(order, (error, rows) =>
-      error
-        ? res.status(500).send({ message: error })
-        : res.status(200).send(rows),
-    );
-  else res.status(500).send({ message: validation.error.details });
+  if (validation) {
+    const params = {
+      o_date: order.o_date,
+      count: parseInt(req.params.count) & -1,
+      page: parseInt(req.params.page) | 0,
+    };
+    if (params.page < 0) params.page = 0;
+    const { response, error } = await orderModel.findByDate(params);
+    if (error) res.status(500).send(error);
+    else if (response.n_orders == 0) res.status(204).send();
+    else res.status(200).send(response);
+  } else res.status(500).send({ message: validation.error.details });
 };
 
 orderController.add = (req, res) => {

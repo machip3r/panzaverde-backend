@@ -3,15 +3,16 @@ const productSchema = require("../schemas/product.schema");
 
 const productController = () => {};
 
-productController.getAll = (req, res) => {
-  const params = req.params;
-  const validation = productSchema.pagination.validate(params);
-  if (validation)
-    productModel.all(params, (error, rows) => {
-      if (error) res.status(500).send({ message: error });
-      else res.status(200).send(rows);
-    });
-  else res.status(500).send({ message: validation.error.details });
+productController.getAll = async (req, res) => {
+  const params = {
+    count: parseInt(req.params.count) & -1,
+    page: parseInt(req.params.page) | 0,
+  };
+  if (params.page < 0) params.page = 0;
+  const { response, error } = await productModel.all(params);
+  if (error) res.status(500).send(error);
+  else if (response.n_products == 0) res.status(204).send();
+  else res.status(200).send(response);
 };
 
 productController.getById = (req, res) => {
@@ -26,15 +27,21 @@ productController.getById = (req, res) => {
   else res.status(500).send({ message: validation.error.details });
 };
 
-productController.getByName = (req, res) => {
+productController.getByName = async (req, res) => {
   const product = req.params;
   const validation = productSchema.p_name.validate(product);
-  if (validation)
-    productModel.findByName(product, (error, rows) => {
-      if (error) res.status(500).send({ message: error });
-      else res.status(200).send(rows);
-    });
-  else res.status(500).send({ message: validation.error.details });
+  if (validation) {
+    const params = {
+      p_name: product.p_name,
+      count: parseInt(req.params.count) & -1,
+      page: parseInt(req.params.page) | 0,
+    };
+    if (params.page < 0) params.page = 0;
+    const { response, error } = await productModel.findByName(params);
+    if (error) res.status(500).send(error);
+    else if (response.n_products == 0) res.status(204).send();
+    else res.status(200).send(response);
+  } else res.status(500).send({ message: validation.error.details });
 };
 
 productController.add = (req, res) => {

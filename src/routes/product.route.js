@@ -6,10 +6,11 @@ const productController = require("../controllers/product.controller");
 router.get("/id/:id_product", productController.getById);
 router.get("/name/:p_name", productController.getByName);
 router.get("/name/:p_name/:count", productController.getByName);
-router.get("/name/:p_name/:count/:offset", productController.getByName);
+router.get("/name/:p_name/:count/:page", productController.getByName);
 router.get("/", productController.getAll);
 router.get("/:count", productController.getAll);
-router.get("/:count/:offset", productController.getAll);
+router.get("/:count/:page", productController.getAll);
+
 router.post("/", productController.add);
 router.put("/", productController.update);
 router.delete("/", productController.delete);

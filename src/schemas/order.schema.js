@@ -18,11 +18,7 @@ orderSchema.o_status = Joi.object({
   count: Joi.number().integer(),
 });
 
-orderSchema.o_date = Joi.object({
-  o_date: Joi.date().required(),
-  offset: Joi.number().integer(),
-  count: Joi.number().integer(),
-});
+orderSchema.o_date = Joi.string().alphanum().required();
 
 orderSchema.pagination = Joi.object({
   offset: Joi.number().integer(),

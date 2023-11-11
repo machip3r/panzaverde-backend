@@ -21,12 +21,7 @@ productSchema.pagination = Joi.object({
   count: Joi.number().min(0).integer(),
 });
 
-productSchema.p_name = Joi.object({
-  p_name: Joi.string().alphanum().min(3).max(30).required(),
-  offset: Joi.number().min(0).integer(),
-  count: Joi.number().min(0).integer(),
-});
-
+productSchema.p_name = Joi.string().alphanum().min(3).max(30).required();
 productSchema.addList = Joi.array().items(productSchema.create).required();
 productSchema.id = Joi.number().integer().required();
 productSchema.price = Joi.number().min(0.0).required();

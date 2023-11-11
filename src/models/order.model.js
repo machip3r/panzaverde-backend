@@ -2,39 +2,30 @@ const connection = require("../config/connection");
 
 const orderModel = () => {};
 
-orderModel.all = (data, callback) => {
-  let sql = "SELECT * FROM pvOrder ORDER BY o_date DESC";
-  let page;
-  if (data.hasOwnProperty("offset") && data.hasOwnProperty("count")) {
-    sql += " LIMIT :offset, :count";
-    page = parseInt(data.offset);
-    data.offset--;
-    data.offset *= data.count;
-  } else if (data.hasOwnProperty("count")) {
-    sql += " LIMIT :count";
-    page = 1;
-  }
-  connection.execute(sql, (values = data), (error, orders) => {
-    if (!data.hasOwnProperty("count"))
-      return callback(error, {
-        max_pages: 1,
-        page: 1,
-        records: orders.length,
-        orders,
-      });
-    connection.execute(
-      "SELECT COUNT(id_order) as max_pages FROM pvOrder LIMIT 1",
-      (error, rows) => {
-        const max_pages = Math.round(rows[0].max_pages / data.count);
-        return callback(error, {
-          max_pages,
-          page,
-          records: orders.length,
-          orders,
-        });
-      },
+orderModel.all = async ({ count, page }) => {
+  const db = connection.promise();
+  const offset = count * page;
+  const response = { orders: [], n_orders: 0, page, n_pages: 0 };
+  let error = null;
+
+  let sqlOrders = "SELECT * FROM pvOrder ORDER BY o_date DESC";
+  if (count > 0)
+    sqlOrders += ` LIMIT ${db.escape(offset)}, ${db.escape(count)}`;
+
+  try {
+    const orders = await db.execute(sqlOrders);
+    const n_pages = await db.execute(
+      "SELECT COUNT(id_order) AS n_orders FROM pvOrder",
     );
-  });
+    response.orders = orders[0];
+    const np = n_pages[0][0].n_orders;
+    response.n_pages = Math.ceil(np / (count > 0 ? count : np));
+    response.n_orders = response.orders.length;
+  } catch (err) {
+    error = "Error getting orders";
+  }
+  db.releaseConnection();
+  return { response, error };
 };
 
 orderModel.find = (order, callback) => {
@@ -97,41 +88,31 @@ orderModel.detail = (order, callback) => {
   );
 };
 
-orderModel.findByDate = (order, callback) => {
-  let sql = `SELECT * FROM pvOrder WHERE DATE(o_date) = :o_date ORDER BY o_date DESC`;
-  let page;
-  if (order.hasOwnProperty("o_date"))
-    if (order.hasOwnProperty("offset") && order.hasOwnProperty("count")) {
-      sql += " LIMIT :offset, :count";
-      page = parseInt(order.offset);
-      order.offset--;
-      order.offset *= order.count;
-    } else if (order.hasOwnProperty("count")) {
-      sql += " LIMIT :count";
-      page = 1;
-    }
-  connection.execute(sql, (values = order), (error, orders) => {
-    if (!order.hasOwnProperty("count"))
-      return callback(error, {
-        max_pages: 1,
-        page: 1,
-        records: orders.length,
-        orders,
-      });
-    connection.execute(
-      `SELECT COUNT(id_order) AS max_pages FROM pvOrder WHERE DATE(o_date) = :o_date LIMIT 1`,
-      (values = order),
-      (error, rows) => {
-        const max_pages = Math.round(rows[0].max_pages / order.count);
-        return callback(error, {
-          max_pages,
-          page,
-          records: orders.length,
-          orders,
-        });
-      },
+orderModel.findByDate = async ({ o_date, count, page }) => {
+  const db = connection.promise();
+  const offset = count * page;
+  const response = { orders: [], n_orders: 0, page, n_pages: 0 };
+  let error = null;
+
+  let sqlOrders = `SELECT * FROM pvOrder WHERE DATE(o_date) = :o_date ORDER BY o_date DESC`;
+  if (count > 0)
+    sqlOrders += ` LIMIT ${db.escape(offset)}, ${db.escape(count)}`;
+
+  try {
+    const orders = await db.execute(sqlOrders, { o_date });
+    const n_pages = await db.execute(
+      "SELECT COUNT(id_order) AS n_orders FROM pvOrder WHERE DATE(o_date) = :o_date",
+      { o_date },
     );
-  });
+    response.orders = orders[0];
+    const np = n_pages[0][0].n_orders;
+    response.n_pages = Math.ceil(np / (count > 0 ? count : np));
+    response.n_orders = response.orders.length;
+  } catch (err) {
+    error = "Error getting orders";
+  }
+  db.releaseConnection();
+  return { response, error };
 };
 
 orderModel.add = async (order, callback) => {
