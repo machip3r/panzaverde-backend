@@ -11,7 +11,10 @@ router.get(
 router.get("/users/:id_client", statisticsController.getUserStatistics);
 router.get("/tickets", statisticsController.getUsersMeanTicket);
 router.get("/tickets/:id_client", statisticsController.getUserMeanTicket);
-router.get("/status/clients", statisticsController.getUsersCountByStatus);
+router.get(
+  "/clients/status-accounts",
+  statisticsController.getUsersCountByStatus,
+);
 router.get(
   "/sales/:start_date/:end_date",
   statisticsController.getSalesByRange,

@@ -5,11 +5,9 @@ const productController = require("../controllers/product.controller");
 
 router.get("/id/:id_product", productController.getById);
 router.get("/name/:p_name", productController.getByName);
-router.get("/name/:p_name/:count", productController.getByName);
-router.get("/name/:p_name/:count/:page", productController.getByName);
+router.get("/name/:p_name/:limit/:page", productController.getByNamePaginated);
 router.get("/", productController.getAll);
-router.get("/:count", productController.getAll);
-router.get("/:count/:page", productController.getAll);
+router.get("/:limit/:page", productController.getAllPaginated);
 
 router.post("/", productController.add);
 router.put("/", productController.update);
