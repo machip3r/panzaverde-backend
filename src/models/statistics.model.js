@@ -46,6 +46,55 @@ statisticsModel.getUserMeanTicket = (data, callback) => {
   connection.execute(sql, data, callback);
 };
 
+statisticsModel.getYearlySales = async () => {
+  let response = [];
+  let error = null;
+  const sql = `SELECT YEAR(po.o_date) AS o_year, IFNULL(SUM(po.o_total), 0) AS o_total
+                FROM pvOrder po
+                GROUP BY o_year
+                ORDER BY o_year`;
+  try {
+    response = (await connection.promise().execute(sql))[0];
+  } catch (err) {
+    error = { msg: "Error getting yearly sales", error: err };
+  }
+  return { error, response };
+};
+
+statisticsModel.getMonthlySales = async ({ year }) => {
+  let response = [];
+  let error = null;
+  const sql = `SELECT MONTH(po.o_date) AS o_month, IFNULL(SUM(po.o_total), 0) AS o_total
+                FROM pvOrder po
+                  WHERE YEAR(po.o_date)=:year
+                GROUP BY o_month
+                ORDER BY o_month`;
+  try {
+    response = (await connection.promise().execute(sql, { year }))[0];
+  } catch (err) {
+    error = { msg: "Error getting monthly sales", error: err };
+  }
+  return { error, response };
+};
+
+statisticsModel.getDailySales = async ({ date }) => {
+  let response = [];
+  let error = null;
+  const sql = `SELECT WEEKOFYEAR(:date) as week_of_year, pd.id_day, pd.d_name, IFNULL(SUM(po.o_total),0) AS o_total
+                FROM pvDay AS pd
+                  LEFT JOIN pvOrder AS po
+                    ON (YEARWEEK(po.o_date) = YEARWEEK(:date)
+                    AND DAYOFWEEK(po.o_date) = pd.id_day+1)
+                  GROUP BY pd.id_day
+                  ORDER BY pd.id_day`;
+  try {
+    response = (await connection.promise().execute(sql, { date }))[0];
+  } catch (err) {
+    error = { msg: "Error in getting daily sales", error: err };
+  }
+  return { error, response };
+};
+
 statisticsModel.getSalesByRange = (data, callback) => {
   let sql = `SELECT op.id_order, op.op_price, po.o_date
                 FROM pvOrderProduct op

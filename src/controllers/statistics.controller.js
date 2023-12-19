@@ -66,4 +66,21 @@ statisticsController.getSalesByRangeAndSocialNetwork = (req, res) => {
   });
 };
 
+statisticsController.getMonthlySales = async (req, res) => {
+  const year = req.params.year;
+  const { error, response } = await statisticsModel.getMonthlySales({ year });
+  error ? res.status(500).send(error) : res.status(200).send(response);
+};
+
+statisticsController.getDailySales = async (req, res) => {
+  const date = req.params.date;
+  const { error, response } = await statisticsModel.getDailySales({ date });
+  error ? res.status(500).send(error) : res.status(200).send(response);
+};
+
+statisticsController.getYearlySales = async (req, res) => {
+  const { error, response } = await statisticsModel.getYearlySales();
+  error ? res.status(500).send(error) : res.status(200).send(response);
+};
+
 module.exports = statisticsController;
